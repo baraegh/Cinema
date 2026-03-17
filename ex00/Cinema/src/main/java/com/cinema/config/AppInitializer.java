@@ -1,8 +1,8 @@
 package com.cinema.config;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import jakarta.servlet.ServletContext;
@@ -13,7 +13,7 @@ public class AppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 
         context.register(Config.class);
 
