@@ -2,12 +2,15 @@ package com.cinema.repositories;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.cinema.models.Hall;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+@Repository
 public class HallRepositoryEntityManagerImpl implements HallRepository {
 
     @PersistenceContext
