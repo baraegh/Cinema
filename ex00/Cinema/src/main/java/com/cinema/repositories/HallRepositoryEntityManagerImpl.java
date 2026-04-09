@@ -42,7 +42,7 @@ public class HallRepositoryEntityManagerImpl implements HallRepository {
 
     @Override
     public List<Hall> findAll() {
-        return em.createQuery("FROM halls", Hall.class)
+        return em.createQuery("FROM Hall", Hall.class)
                 .getResultList();
     }
 

@@ -3,6 +3,8 @@ package com.cinema.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cinema.models.Film;
 import com.cinema.services.FilmService;
@@ -21,9 +23,10 @@ public class FilmController {
     }
 
     @PostMapping("/save")
-    public String saveFilm(@ModelAttribute Film film) {
-        filmService.save(film);
-        return "";
+    public String saveFilm(@ModelAttribute Film film,
+            @RequestParam("poster") MultipartFile poster) {
+        filmService.save(film, poster);
+        return "redirect:/admin/panel/films";
     }
     
 
@@ -31,7 +34,7 @@ public class FilmController {
     public String getAllFilms(Model model) {
         model.addAttribute("films", filmService.getAll());
 
-        return "";
+        return "admin/films";
     }
     
 }

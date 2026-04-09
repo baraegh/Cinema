@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cinema.models.Session;
-import com.cinema.repositories.SessionRepositoryEntityManagerImpl;
+import com.cinema.repositories.SessionRepository;
 
 @Service
 public class SessionService {
-    private final SessionRepositoryEntityManagerImpl  sesssionRepository;
+    private final SessionRepository  sesssionRepository;
 
-    public SessionService(SessionRepositoryEntityManagerImpl  sesssionRepository) {
+    public SessionService(SessionRepository  sesssionRepository) {
         this.sesssionRepository = sesssionRepository;
     }
 

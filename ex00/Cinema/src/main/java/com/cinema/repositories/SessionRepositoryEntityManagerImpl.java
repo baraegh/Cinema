@@ -42,7 +42,7 @@ public class SessionRepositoryEntityManagerImpl implements SessionRepository {
 
     @Override
     public List<Session> findAll() {
-        return em.createQuery("FROM sessions", Session.class)
+        return em.createQuery("FROM Session", Session.class)
                 .getResultList();
     }
     

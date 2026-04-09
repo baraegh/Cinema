@@ -23,14 +23,14 @@ public class HallController {
     @PostMapping("/save")
     public String saveHall(@ModelAttribute Hall hall) {
         hallService.save(hall);
-        return "";
+        return "redirect:/admin/panel/halls";
     }
     
     @GetMapping
     public String getAllHalls(Model model) {
         model.addAttribute("halls", hallService.getAll());
 
-        return "";
+        return "admin/halls";
     }
     
 }

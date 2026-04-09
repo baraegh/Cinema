@@ -5,6 +5,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
@@ -22,6 +23,15 @@ public class AppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcher", dispatcher);
         registration.setLoadOnStartup(1);
         registration.addMapping("/");
+
+        registration.setMultipartConfig(
+            new MultipartConfigElement(
+                "/tmp",
+                10 * 1024 * 1024,
+                20 * 1024 * 1024,
+                0
+            )
+        );
     }
     
 }

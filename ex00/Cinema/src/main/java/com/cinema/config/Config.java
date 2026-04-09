@@ -3,14 +3,19 @@ package com.cinema.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-@EnableWebMvc
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages =  "com.cinema")
-public class Config {
+@PropertySource("classpath:application.properties")
+public class Config implements WebMvcConfigurer {
     
     @Bean
     public FreeMarkerViewResolver viewResolver() {
@@ -18,6 +23,7 @@ public class Config {
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
         resolver.setContentType("text/html;charset=UTF-8");
+        resolver.setExposeSpringMacroHelpers(true); 
         return resolver;
     }
 
@@ -30,5 +36,20 @@ public class Config {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPath("/WEB-INF/views");
         return configurer;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("/static/");
+    }
+
+    /*
+        Multipart resolver
+        needed for file uploads
+    */
+    @Bean
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }

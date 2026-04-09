@@ -1,10 +1,12 @@
 package com.cinema.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,7 +15,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "sessions")
 public class Session {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long            id;
 
     @ManyToOne
@@ -26,6 +28,7 @@ public class Session {
 
     @Column(name = "date_time")
     private LocalDateTime   dateTime;
+    private String          formattedDateTime;
 
     @Column(name = "ticket_price")
     private double          ticketPrice;
@@ -76,6 +79,11 @@ public class Session {
         return dateTime;
     }
 
+    public String getFormattedDateTime() {
+        if (dateTime == null) return "N/A";
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -87,6 +95,4 @@ public class Session {
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
-
-    
 }

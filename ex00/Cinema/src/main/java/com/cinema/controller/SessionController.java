@@ -1,13 +1,17 @@
 package com.cinema.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cinema.models.Session;
+import com.cinema.services.FilmService;
+import com.cinema.services.HallService;
 import com.cinema.services.SessionService;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,23 +20,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/admin/panel/sessions")
 public class SessionController {
     private final SessionService    sessionService;
+    private final HallService       hallService;
+    private final FilmService       filmService;
 
-    public SessionController(SessionService sessionService) {
+    public SessionController(SessionService sessionService, HallService hallService, 
+            FilmService filmService) {
         this.sessionService = sessionService;
+        this.hallService = hallService;
+        this.filmService = filmService;
     }
 
     @PostMapping("/save")
-    public String saveSession(@ModelAttribute Session session) {
+    public String saveSession(
+                @RequestParam("filmId") Long filmId, 
+                @RequestParam("hallId") Long hallId,
+                @RequestParam("dateTime") String dateTime,
+                @RequestParam("ticketPrice") double ticketPrice)
+    {
+        Session session = new Session();
+        session.setFilm(filmService.getById(filmId));
+        session.setHall(hallService.getById(hallId));
+        session.setDateTime(LocalDateTime.parse(dateTime));
+        session.setTicketPrice(ticketPrice);
         sessionService.save(session);
-
-        return "";
+        return "redirect:/admin/panel/sessions";
     }
     
     @GetMapping
     public String getAllSessions(Model model) {
         model.addAttribute("sessions", sessionService.getAll());
+        model.addAttribute("halls", hallService.getAll());
+        model.addAttribute("films", filmService.getAll());
 
-        return "";
+        return "admin/sessions";
     }
     
 }

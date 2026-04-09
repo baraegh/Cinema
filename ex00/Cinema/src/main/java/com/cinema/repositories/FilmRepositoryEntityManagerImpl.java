@@ -42,7 +42,7 @@ public class FilmRepositoryEntityManagerImpl implements FilmRepository{
 
     @Override
     public List<Film> findAll() {
-        return em.createQuery("From films", Film.class)
+        return em.createQuery("From Film", Film.class)
                 .getResultList();
     }
     
