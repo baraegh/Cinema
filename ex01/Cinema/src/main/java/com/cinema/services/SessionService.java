@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.cinema.models.Session;
 import com.cinema.repositories.SessionRepository;
 
+import com.cinema.dto.SessionSearchResponse;
+
 import com.cinema.dto.SessionDto;
 import com.cinema.dto.FilmDto;
 
@@ -23,16 +25,28 @@ public class SessionService {
         return sesssionRepository.save(session);
     }
 
+    public Session getById(Long id) {
+        return sesssionRepository.findById(id);
+    }
+
     public List<Session> getAll() {
         return sesssionRepository.findAll();
     }
 
-    public List<SessionDto> searchByFilmName(String filmName) {
+    public SessionSearchResponse getAllSessionsDto() {
+        List<SessionDto> dto = sesssionRepository.findAll().stream()
+                .map(this::toSessionDto)
+                .collect(Collectors.toList());
+        return new SessionSearchResponse(dto);
+    }
+
+    public SessionSearchResponse searchByFilmName(String filmName) {
         List<Session> sessions = sesssionRepository.findByFileName(filmName);
 
-        return sessions.stream()
+        List<SessionDto> dto = sessions.stream()
             .map(this::toSessionDto)
             .collect(Collectors.toList());
+        return new SessionSearchResponse(dto);
     }
 
     private SessionDto toSessionDto(Session session) {
@@ -43,6 +57,6 @@ public class SessionService {
             )
         : null ;
 
-        return new SessionDto(session.getId(), session.getFormattedDateTime(), filmDto);
+        return new SessionDto(session.getId(), session.getFormattedDateTime(), filmDto, session.getTicketPrice());
     }
 }

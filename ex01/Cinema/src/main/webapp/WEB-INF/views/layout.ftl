@@ -9,6 +9,7 @@
 
     <!-- navbar — shared across all pages -->
     <nav>
+        <a href="/cinema/sessions">Search</a>
         <a href="/cinema/admin/panel/halls">Halls</a>
         <a href="/cinema/admin/panel/films">Films</a>
         <a href="/cinema/admin/panel/sessions">Sessions</a>

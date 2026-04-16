@@ -48,7 +48,7 @@ public class SessionRepositoryEntityManagerImpl implements SessionRepository {
 
     @Override
     public List<Session> findByFileName(String filmName) {
-        return em.createQuery("From Session s WHERE s.film.title = :title", Session.class)
+        return em.createQuery("From Session s WHERE s.film.title LIKE :title", Session.class)
                 .setParameter("title", "%" + filmName + "%")
                 .getResultList();
     }

@@ -1,14 +1,14 @@
 package com.cinema.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cinema.dto.SessionDto;
+import com.cinema.dto.SessionSearchResponse;
 import com.cinema.services.SessionService;
 
 @Controller
@@ -19,12 +19,27 @@ public class SessionController {
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
-    
+
+    @GetMapping
+    public String get() {
+        return "sessions/sessions";
+    }
+
+    @GetMapping("/{id}")
+    public String getMethodName(@PathVariable Long id, Model model) {
+        model.addAttribute("session", sessionService.getById(id));
+        return "sessions/details";
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public SessionSearchResponse getAllSessions() {
+        return sessionService.getAllSessionsDto();
+    }
 
     @GetMapping("/search")
     @ResponseBody
-    public List<SessionDto> searchByFileName(@RequestParam String filmName) {
+    public SessionSearchResponse searchByFileName(@RequestParam String filmName) {
         return sessionService.searchByFilmName(filmName);
-    }
-    
+    }    
 }
