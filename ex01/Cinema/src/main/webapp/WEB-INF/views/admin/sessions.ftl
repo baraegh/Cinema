@@ -2,7 +2,10 @@
 
 <@layout.mainLayout title="Movie Sessions">
 
-    <h1>Movie Sessions</h1>
+    <div class="header-with-action">
+        <h1>Movie Sessions</h1>
+        <button class="btn-action" onclick="openModal('sessionModal')">+ Create New Session</button>
+    </div>
 
     <!-- sessions list -->
     <table border="1">
@@ -28,47 +31,57 @@
         </#list>
     </table>
 
-    <!-- create session form -->
-    <h2>Create New Session</h2>
-    <form method="post" action="/cinema/admin/panel/sessions/save">
+    <!-- Modal for Creating Session -->
+    <div id="sessionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Session</h2>
+                <button class="modal-close" onclick="closeModal('sessionModal')">&times;</button>
+            </div>
+            <form method="post" action="/cinema/admin/panel/sessions/save" class="modal-form">
 
-        <!-- film dropdown -->
-        <div>
-            <label>Film:</label>
-            <select name="filmId" required>
-                <#list films as film>
-                    <option value="${film.id}">${film.title} (${film.year})</option>
-                <#else>
-                    <option disabled>No films available</option>
-                </#list>
-            </select>
+                <!-- film dropdown -->
+                <div>
+                    <label>Film:</label>
+                    <select name="filmId" required>
+                        <#list films as film>
+                            <option value="${film.id}">${film.title} (${film.year})</option>
+                        <#else>
+                            <option disabled>No films available</option>
+                        </#list>
+                    </select>
+                </div>
+
+                <!-- hall dropdown -->
+                <div>
+                    <label>Hall:</label>
+                    <select name="hallId" required>
+                        <#list halls as hall>
+                            <option value="${hall.id}">Hall ${hall.serialNumber!0} — ${hall.seatsCount!0} seats</option>
+                        <#else>
+                            <option disabled>No halls available</option>
+                        </#list>
+                    </select>
+                </div>
+
+                <!-- time -->
+                <div>
+                    <label>Date & Time:</label>
+                    <input type="datetime-local" name="dateTime" required/>
+                </div>
+
+                <!-- ticket cost -->
+                <div>
+                    <label>Ticket Cost:</label>
+                    <input type="number" name="ticketPrice" step="0.01" min="0" placeholder="0.00" required/>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('sessionModal')">Cancel</button>
+                    <button type="submit" class="btn-submit">Create Session</button>
+                </div>
+            </form>
         </div>
-
-        <!-- hall dropdown -->
-        <div>
-            <label>Hall:</label>
-            <select name="hallId" required>
-                <#list halls as hall>
-                    <option value="${hall.id}">Hall ${hall.serialNumber!0} — ${hall.seatsCount!0} seats</option>
-                <#else>
-                    <option disabled>No halls available</option>
-                </#list>
-            </select>
-        </div>
-
-        <!-- time -->
-        <div>
-            <label>Date & Time:</label>
-            <input type="datetime-local" name="dateTime" required/>
-        </div>
-
-        <!-- ticket cost -->
-        <div>
-            <label>Ticket Cost:</label>
-            <input type="number" name="ticketPrice" step="0.01" min="0" placeholder="0.00" required/>
-        </div>
-
-        <button type="submit">Create Session</button>
-    </form>
+    </div>
 
 </@layout.mainLayout>

@@ -264,6 +264,15 @@ form div {
   flex-direction: column;
 }
 
+form div.modal-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem !important;
+  margin-top: 1.5rem !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid var(--border) !important;
+}
+
 /* ── Button ──────────────────────────────────────────────────── */
 button[type="submit"] {
   align-self: flex-start;
@@ -288,6 +297,12 @@ button[type="submit"]:hover {
 
 button[type="submit"]:active {
   transform: scale(0.98);
+}
+
+/* Modal button overrides */
+.modal-actions button[type="submit"] {
+  align-self: auto !important;
+  margin-top: 0 !important;
 }
 
 /* ── Footer ──────────────────────────────────────────────────── */
@@ -470,4 +485,248 @@ footer {
 .profile-info p {
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
+}
+
+/* ── Header with Action Button ─────────────────────────────── */
+.header-with-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-with-action h1 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  flex: 1;
+}
+
+.header-with-action h1::after {
+  display: none;
+}
+
+.btn-action {
+  background: var(--accent);
+  color: #0d0d0f;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7rem 1.8rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn-action:hover {
+  background: #f0c75a;
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+/* ── Modal Styles ──────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal.show {
+  background-color: rgba(0, 0, 0, 0.8);
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s ease;
+  pointer-events: auto;
+  z-index: 1001;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--accent);
+}
+
+.modal-form {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  padding: 1.5rem !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  gap: 1rem !important;
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.modal-form div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem;
+}
+
+.modal-form div label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form select {
+  width: 100% !important;
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  color: var(--text) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.95rem !important;
+  padding: 0.65rem 0.9rem !important;
+  outline: none !important;
+}
+
+.modal-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem !important;
+  margin-top: 1.5rem !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid var(--border) !important;
+  grid-column: unset !important;
+  width: 100% !important;
+}
+
+.btn-cancel {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  background: var(--border) !important;
+  color: var(--text) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  border-radius: var(--radius) !important;
+  padding: 0.75rem 1rem !important;
+  cursor: pointer !important;
+  transition: background 0.2s, transform 0.1s !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-cancel:hover {
+  background: #3a3a50 !important;
+}
+
+.btn-cancel:active {
+  transform: scale(0.98) !important;
+}
+
+.btn-submit {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  background: var(--accent) !important;
+  color: #0d0d0f !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  border-radius: var(--radius) !important;
+  padding: 0.75rem 1rem !important;
+  cursor: pointer !important;
+  transition: background 0.2s, transform 0.1s !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-submit:hover {
+  background: #f0c75a !important;
+}
+
+.btn-submit:active {
+  transform: scale(0.98) !important;
 }

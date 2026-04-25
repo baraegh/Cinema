@@ -1,7 +1,10 @@
 <#import "../layout.ftl" as layout>
 
 <@layout.mainLayout title="Movie Halls">
-    <h1>Movie Halls</h1>
+    <div class="header-with-action">
+        <h1>Movie Halls</h1>
+        <button class="btn-action" onclick="openModal('hallModal')">+ Create New Hall</button>
+    </div>
 
     <table border="1">
         <tr>
@@ -20,17 +23,28 @@
         </#list>
     </table>
 
-    <h2>Create New Hall</h2>
-    <form method="post" action="/cinema/admin/panel/halls/save">
-        <div>
-            <label>Hall number</label>
-            <input type="number" name="serialNumber" placeholder="Hall number" required/>
+    <!-- Modal for Creating Hall -->
+    <div id="hallModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Hall</h2>
+                <button class="modal-close" onclick="closeModal('hallModal')">&times;</button>
+            </div>
+            <form method="post" action="/cinema/admin/panel/halls/save" class="modal-form">
+                <div>
+                    <label>Hall number</label>
+                    <input type="number" name="serialNumber" placeholder="Hall number" required/>
+                </div>
+                <div>
+                    <label>Seats</label>
+                    <input type="number" name="seatsCount" placeholder="Seats" required/>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('hallModal')">Cancel</button>
+                    <button type="submit" class="btn-submit">Create</button>
+                </div>
+            </form>
         </div>
-        <div>
-            <label>Seats</label>
-            <input type="number" name="seatsCount" placeholder="Seats" required/>
-        </div>
-        <button type="submit">Create</button>
-    </form>
+    </div>
 
 </@layout.mainLayout>
