@@ -47,8 +47,9 @@ public class ChatRepositoryEntityManagerImpl implements ChatRepository {
     }
 
     @Override
-    public List<ChatMessage> findLast20ByFilmId() {
-        return em.createQuery("From ChatMessage order by dateTime desc", ChatMessage.class)
+    public List<ChatMessage> findLast20ByFilmId(Long filmId) {
+        return em.createQuery("From ChatMessage where filmId = :filmId order by dateTime desc", ChatMessage.class)
+                .setParameter("filmId", filmId)
                 .setMaxResults(20)
                 .getResultList();
     }
