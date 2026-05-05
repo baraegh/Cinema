@@ -1,6 +1,7 @@
 package com.cinema.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,35 +21,30 @@ public class ChatMessage {
     private Long            filmId;
 
     @Column(name = "user_id")
-    private Long            userId;
+    private String          userId;
 
     @Column(name = "msg")
     private String          msg;
 
     @Column(name = "date_time")
     private LocalDateTime   dateTime;
-
-    @Column(name = "ip_address")
-    private String          ipAddress;
-
+    private String          formattedDateTime;
 
     public ChatMessage() {}
 
-    public ChatMessage(Long id, Long filmId, Long userId, String msg, LocalDateTime dateTime, String ipAddress) {
+    public ChatMessage(Long id, Long filmId, String userId, String msg, LocalDateTime dateTime, String ipAddress) {
         this.id = id;
         this.filmId = filmId;
         this.userId = userId;
         this.msg = msg;
         this.dateTime = dateTime;
-        this.ipAddress = ipAddress;
     }
 
-    public ChatMessage(Long filmId, Long userId, String msg, LocalDateTime dateTime, String ipAddress) {
+    public ChatMessage(Long filmId, String userId, String msg, LocalDateTime dateTime, String ipAddress) {
         this.filmId = filmId;
         this.userId = userId;
         this.msg = msg;
         this.dateTime = dateTime;
-        this.ipAddress = ipAddress;
     }
 
     public Long getId() {
@@ -67,11 +63,11 @@ public class ChatMessage {
         this.filmId = filmId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -91,12 +87,8 @@ public class ChatMessage {
         this.dateTime = dateTime;
     }
 
-    public String getIpAddress() {
-        return this.ipAddress;
+    public String getFormattedDateTime() {
+        if (dateTime == null) return "N/A";
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
 }

@@ -1,6 +1,7 @@
 package com.cinema.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,12 +16,17 @@ public class UserAuthentication {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long            id;
+
     @Column(name = "user_id")
     private String          userId;
+
     @Column(name = "ip_adress")
     private String          ipAdress;
+
     @Column(name = "date_time")
     private LocalDateTime   dateTime;
+    private String          formattedDateTime;
+
     @Column(name = "film_id")
     private Long            filmId;
 
@@ -82,4 +88,8 @@ public class UserAuthentication {
         this.filmId = filmId;
     }
 
+    public String getFormattedDateTime() {
+        if (dateTime == null) return "N/A";
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
 }

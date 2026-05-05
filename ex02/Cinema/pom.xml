@@ -99,6 +99,14 @@
         <scope>compile</scope>
     </dependency>
 
+    <!-- Jackson JSR310 for Java 8+ date/time serialization -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>2.21.2</version>
+        <scope>compile</scope>
+    </dependency>
+
     <!-- Source: https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
     <dependency>
         <groupId>org.springframework</groupId>
@@ -145,6 +153,35 @@
                 <compilerArgs>
                     <arg>-parameters</arg>
                 </compilerArgs>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven3-plugin</artifactId>
+            <version>1.10.14</version>
+            <configuration>
+                <container>
+                <containerId>tomcat10x</containerId>
+                <type>installed</type>
+                <home>/opt/homebrew/opt/tomcat/libexec</home>
+                </container>
+                <configuration>
+                <type>standalone</type>
+                <properties>
+                    <cargo.servlet.port>8080</cargo.servlet.port>
+                </properties>
+                </configuration>
+                <deployables>
+                <deployable>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <type>war</type>
+                    <properties>
+                    <context>cinema</context>
+                    </properties>
+                </deployable>
+                </deployables>
             </configuration>
         </plugin>
     </plugins>

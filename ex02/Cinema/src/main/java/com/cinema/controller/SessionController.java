@@ -26,7 +26,7 @@ public class SessionController {
     }
 
     @GetMapping("/{id}")
-    public String getMethodName(@PathVariable Long id, Model model) {
+    public String getById(@PathVariable Long id, Model model) {
         model.addAttribute("session", sessionService.getById(id));
         return "sessions/details";
     }

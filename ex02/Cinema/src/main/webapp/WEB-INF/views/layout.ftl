@@ -5,6 +5,7 @@
     <title>${title}</title>
     <link rel="stylesheet" href="/cinema/static/css/style.css"/>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <body>
 
     <!-- navbar — shared across all pages -->
