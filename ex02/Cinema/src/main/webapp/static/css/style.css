@@ -396,7 +396,9 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  flex: 1;
+  align-items: stretch;
+  max-height: calc(100vh - 220px);
+  overflow-y: visible;
 }
 
 .card-body h3 {
@@ -741,8 +743,8 @@ footer {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 2rem;
-  min-height: calc(100vh - 200px);
-  margin-bottom: 2rem;
+    min-height: calc(100vh - 200px);
+    margin-bottom: 2rem;
 }
 
 .chat-main {
@@ -753,7 +755,7 @@ footer {
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
-  max-height: calc(100vh - 220px);
+  height: calc(100vh - 220px);
   min-height: 0;
 }
 
@@ -882,19 +884,93 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    align-items: stretch;
+    height: calc(100vh - 220px);
 }
 
 .scrollable {
-  max-height: 300px;
+  max-height: 100%;
   overflow-y: auto;
 }
 
 .sidebar-panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    box-shadow: var(--shadow);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  overflow: hidden;
+}
+
+/* Merged avatars panel placed under the chat area (spans full width) */
+.merged-avatar-panel {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.merged-avatar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.merged-avatar-header .sidebar-title {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.merged-avatar-body {
+  display: block;
+}
+
+.merged-avatar-preview {
+  min-width: 220px;
+}
+
+.merged-subtitle {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.image-preview-box {
+  background: var(--bg-input);
+  border-radius: 6px;
+  padding: 0.75rem;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+#imagePreview img {
+  display: block;
+  max-width: 100%;
+  max-height: 140px;
+  border-radius: 6px;
+}
+
+/* Make the auth panel stretch to sidebar height and let its inner list scroll */
+#authPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#authPanel .scrollable {
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 .sidebar-title {
@@ -907,15 +983,26 @@ footer {
 }
 
 .upload-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  flex: 0 0 auto;
+  min-width: 0;
+  background: none;
+  border: none;
+  border-radius: none;
+  box-shadow: none;
+  padding: 0rem;
 }
 
 .file-input-wrapper {
     position: relative;
     overflow: hidden;
-    display: inline-block;
+    display: block;
+    flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
 }
 
 .file-input-wrapper input[type="file"] {
@@ -924,14 +1011,27 @@ footer {
 }
 
 .file-input-label {
-    background: var(--accent);
-    color: #000;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    text-align: center;
-    transition: all 0.2s;
+  background: var(--accent);
+  color: #000;
+  padding: 0 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  flex: 0 0 auto;
+  margin-bottom: 0rem;
+}
+
+/* ensure label/button can shrink inside flex containers */
+.merged-avatar-panel .file-input-label,
+.merged-avatar-panel #uploadBtn,
+.merged-avatar-panel .file-input-wrapper {
+  min-width: 0;
 }
 
 .file-input-label:hover {
@@ -939,14 +1039,17 @@ footer {
 }
 
 #uploadBtn {
-    background: var(--success);
-    border: none;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
+  background: var(--success);
+  border: none;
+  color: white;
+  padding: 0 1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 40px;
+  flex: 0 0 auto;
+  margin-top: 0rem;
 }
 
 #uploadBtn:hover {
@@ -966,6 +1069,7 @@ footer {
     padding: 0.75rem;
     border-radius: 4px;
     border-left: 3px solid var(--success);
+    margin: 10px;
 }
 
 .image-item a {
@@ -1053,4 +1157,8 @@ footer {
 
 .scrollable .user-info {
   margin-bottom: 0.75rem;
+}
+
+.img-items {
+  max-height: 500px;
 }

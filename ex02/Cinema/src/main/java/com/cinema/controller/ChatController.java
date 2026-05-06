@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cinema.models.ChatMessage;
 import com.cinema.models.UserAuthentication;
 import com.cinema.repositories.AuthRepository;
+import com.cinema.services.AvatarService;
 import com.cinema.services.ChatService;
 import com.cinema.services.FilmService;
 
@@ -28,16 +29,22 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/films")
 public class ChatController {
-    private final ChatService       chatService;
-    private final AuthRepository    authRepository;
-    private final FilmService       filmService;
+    private final ChatService           chatService;
+    private final AuthRepository        authRepository;
+    private final FilmService           filmService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final AvatarService         avatarService;
 
-    public ChatController(ChatService chatService, AuthRepository authRepository, FilmService filmService, SimpMessagingTemplate messagingTemplate) {
+    public ChatController(ChatService chatService,
+            AuthRepository authRepository,
+            FilmService filmService,
+            SimpMessagingTemplate messagingTemplate,
+            AvatarService avatarService) {
         this.chatService = chatService;
         this.authRepository = authRepository;
         this.filmService = filmService;
         this.messagingTemplate = messagingTemplate;
+        this.avatarService = avatarService;
     }
 
     @MessageMapping("/films/{filmId}/chat")
@@ -78,6 +85,7 @@ public class ChatController {
         model.addAttribute("film", filmService.getById(filmId));
         model.addAttribute("initialMessages", chatService.getLast20ByFilmId(filmId));
         model.addAttribute("userAuthentication", authRepository.findByUserId(userId));
+        model.addAttribute("avatars", avatarService.getByUserId(userId));
         return "films/chat";
     }
 

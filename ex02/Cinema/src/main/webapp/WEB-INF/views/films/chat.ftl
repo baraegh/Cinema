@@ -36,17 +36,14 @@
         </div>
     </div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Connection Status -->
         <div id="connectionStatus" class="connection-status disconnected">
             ⚫ Disconnected
         </div>
 
-        <!-- User Info Panel -->
-        <div class="sidebar-panel">
-            <div class="sidebar-title">Your AuthenticationHistory</div>
-            <div class="scrollable">
+        <div class="sidebar-panel" id="authPanel">
+            <div class="sidebar-title">Your Authentication History</div>
+            <div class="scrollable" id="authScroll">
                 <#list userAuthentication as us >
                     <div class="user-info ">
                         <div class="info-label">User ID</div>
@@ -63,24 +60,46 @@
                 </#list>
             </div>
         </div>
+    </div>
 
-        <!-- Image Upload Panel -->
-        <div class="sidebar-panel">
-            <div class="sidebar-title">Upload Avatar</div>
-            <form id="uploadForm" class="upload-form">
+
+    <div class="sidebar-panel merged-avatar-panel" id="mergedAvatarPanel">
+        <div class="merged-avatar-header">
+            <div class="sidebar-title">Avatars & Upload</div>
+
+            <form id="uploadForm" class="upload-form"
+                method="POST"
+                enctype="multipart/form-data"
+            >
                 <div class="file-input-wrapper">
-                    <input type="file" id="imageInput" accept="image/*" />
+                    <input type="file" id="imageInput" name="image" accept="image/*" required/>
                     <label for="imageInput" class="file-input-label">Choose Image</label>
                 </div>
                 <button type="submit" id="uploadBtn">Upload</button>
             </form>
         </div>
 
-        <!-- Uploaded Images Panel -->
-        <div class="sidebar-panel">
-            <div class="sidebar-title">Avatars</div>
-            <div class="images-list" id="imagesList">
-                <div style="color: var(--text-muted); font-size: 0.85rem;">No images uploaded</div>
+        <div class="merged-avatar-body">
+            <div class="merged-avatar-preview">
+                <div class="sidebar-title merged-subtitle">Preview</div>
+                <div id="imagePreview" class="image-preview-box">
+                    <div id="previewPlaceholder" class="preview-placeholder">No image selected</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top:1rem;">
+            <div class="sidebar-title" style="font-size:0.95rem; margin-bottom:0.5rem;">Uploaded Avatars</div>
+            <div class="scrollable img-items">
+                <#list avatars as a >
+                    <div class="image-item">
+                        <a href="${a.url}" target="_blank">${a.fileName}</a>
+                    </div>
+                <#else>
+                    <div class="images-list" id="imagesList">
+                        <div style="color: var(--text-muted); font-size: 0.85rem;">No images uploaded</div>
+                    </div>
+                </#list>
             </div>
         </div>
     </div>
@@ -136,7 +155,7 @@
         var messageInput = document.getElementById('messageInput');
         var sendBtn = document.getElementById('sendBtn');
         var renderedMessages = new Set();
-
+        
         function buildMessageKey(message) {
             if (message.id) {
                 return 'id:' + message.id;
@@ -246,6 +265,58 @@
                 stompClient.disconnect();
             }
         });
+
+        // --- Avatar preview ---
+        var imageInput = document.getElementById('imageInput');
+        var imagePreview = document.getElementById('imagePreview');
+        var previewPlaceholder = document.getElementById('previewPlaceholder');
+        var imagesList = document.getElementById('imagesList');
+        var uploadForm = document.getElementById('uploadForm');
+
+        function clearPreview() {
+            if (!imagePreview) return;
+            var img = imagePreview.querySelector('img');
+            if (img) img.remove();
+            var other = imagePreview.querySelector('div');
+            if (other) other.remove();
+            if (previewPlaceholder) previewPlaceholder.textContent = 'No image selected';
+        }
+
+        if (uploadForm) {
+            uploadForm.action = '/cinema/images/' + userId + "/" + filmId;
+        }
+
+        if (imageInput) {
+            imageInput.addEventListener('change', function() {
+                var file = this.files && this.files[0];
+                clearPreview();
+                if (!file) return;
+                if (file.type && file.type.indexOf('image') === 0) {
+                    var img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.onload = function() { URL.revokeObjectURL(this.src); };
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '140px';
+                    img.style.borderRadius = '6px';
+                    imagePreview.appendChild(img);
+                } else {
+                    var nod = document.createElement('div');
+                    nod.textContent = file.name;
+                    nod.style.color = 'var(--text)';
+                    nod.style.wordBreak = 'break-all';
+                    imagePreview.appendChild(nod);
+                }
+            });
+        }
+
+        function matchAuthPanelHeight() {
+            var chatMain = document.querySelector('.chat-main');
+            var authPanel = document.getElementById('authPanel');
+            if (chatMain && authPanel) {
+                authPanel.style.maxHeight = chatMain.offsetHeight + 'px';
+                authPanel.style.overflow = '';
+            }
+        }
 
         updateConnectionStatus(false);
         scrollMessagesToBottom();
