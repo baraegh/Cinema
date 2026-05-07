@@ -4,5 +4,5 @@ import java.util.List;
 import com.cinema.models.Avatar;
 
 public interface AvatarRepository extends CrudeRepository<Avatar> {
-    public List<Avatar> findByUserId(String userId);
+    public List<Avatar> findByUserIdAndFilmId(String userId, Long filmId);
 }

@@ -27,7 +27,7 @@ public class AvatarService {
         this.servletContext = servletContext;
     }
 
-    public Avatar save(MultipartFile image, String userId) throws IOException {
+    public Avatar save(MultipartFile image, String userId, Long filmId) throws IOException {
         String  uploadDir = servletContext.getRealPath("/static/uploads/avatars/");
         Path    uploadPath = Paths.get(uploadDir);
 
@@ -45,6 +45,7 @@ public class AvatarService {
 
         Avatar avatar = new Avatar(
             userId,
+            filmId,
             originalName,
             uniqueName,
             "/cinema/static/uploads/avatars/" + uniqueName,
@@ -54,7 +55,7 @@ public class AvatarService {
         return avatarRepository.save(avatar);
     }
 
-    public List<Avatar> getByUserId(String userId) {
-        return avatarRepository.findByUserId(userId);
+    public List<Avatar> getByUserIdAndFilmId(String userId, Long filmId) {
+        return avatarRepository.findByUserIdAndFilmId(userId, filmId);
     }
 }

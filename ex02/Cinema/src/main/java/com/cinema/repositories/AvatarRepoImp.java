@@ -47,9 +47,10 @@ public class AvatarRepoImp implements AvatarRepository {
     }
 
     @Override
-    public List<Avatar> findByUserId(String userId) {
-        return em.createQuery("SELECT a FROM Avatar a WHERE a.userId = :userId", Avatar.class)
-                 .setParameter("userId", userId)
-                 .getResultList();
+    public List<Avatar> findByUserIdAndFilmId(String userId, Long filmId) {
+        return em.createQuery("SELECT a FROM Avatar a WHERE a.userId = :userId AND a.filmId = :filmId", Avatar.class)
+                .setParameter("userId", userId)
+                .setParameter("filmId", filmId)
+                .getResultList();
     }
 }

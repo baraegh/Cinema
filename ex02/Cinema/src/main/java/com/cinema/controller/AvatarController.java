@@ -23,7 +23,7 @@ public class AvatarController {
     @PostMapping("/{userId}/{filmId}")
     public String save(@RequestParam MultipartFile image, @PathVariable String userId,
             @PathVariable Long filmId) throws IOException {
-        avatarService.save(image, userId);
+        avatarService.save(image, userId, filmId);
         return "redirect:/films/" + filmId + "/chat";
     }
 }

@@ -18,6 +18,7 @@
                 <p><strong>Date & time:</strong> ${session.formattedDateTime!''}</p>
                 <p><strong>Hall:</strong> ${session.hall.serialNumber!''}</p>
                 <p><strong>Description:</strong> $${session.film.description!''}</p>
+                <p><strong>Chat:</strong> <a href="/cinema/films/${session.film.id}/chat">Join Chat</a></p>
             </div>
         </div>
     <#else>

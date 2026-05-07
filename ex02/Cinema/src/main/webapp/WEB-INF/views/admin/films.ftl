@@ -14,6 +14,7 @@
             <th>Age Restriction</th>
             <th>Description</th>
             <th>Poster</th>
+            <th>Chat</th>
         </tr>
         <#list films as film>
             <tr>
@@ -27,6 +28,9 @@
                     <#else>
                         No poster
                     </#if>
+                </td>
+                <td>
+                    <a href="/cinema/films/${film.id}/chat">Chat</a>
                 </td>
             </tr>
         <#else>

@@ -19,6 +19,9 @@ public class Avatar {
     @Column(name = "user_id")
     private String  userId;
 
+    @Column(name = "film_id")
+    private Long    filmId;
+
     @Column(name = "file_name")
     private String  fileName;
 
@@ -32,19 +35,23 @@ public class Avatar {
     private LocalDateTime uploadedAt;
 
 
-    public Avatar() {}
 
-    public Avatar(Long id, String userId, String fileName, String originalFileName, String url, LocalDateTime uploadedAt) {
+    public Avatar() {
+    }
+
+    public Avatar(Long id, String userId, Long filmId, String fileName, String originalFileName, String url, LocalDateTime uploadedAt) {
         this.id = id;
         this.userId = userId;
+        this.filmId = filmId;
         this.fileName = fileName;
         this.originalFileName = originalFileName;
         this.url = url;
         this.uploadedAt = uploadedAt;
     }
 
-    public Avatar(String userId, String fileName, String originalFileName, String url, LocalDateTime uploadedAt) {
+    public Avatar(String userId, Long filmId, String fileName, String originalFileName, String url, LocalDateTime uploadedAt) {
         this.userId = userId;
+        this.filmId = filmId;
         this.fileName = fileName;
         this.originalFileName = originalFileName;
         this.url = url;
@@ -65,6 +72,14 @@ public class Avatar {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Long getFilmId() {
+        return this.filmId;
+    }
+
+    public void setFilmId(Long filmId) {
+        this.filmId = filmId;
     }
 
     public String getFileName() {

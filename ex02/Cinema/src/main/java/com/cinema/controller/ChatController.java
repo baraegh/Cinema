@@ -85,7 +85,7 @@ public class ChatController {
         model.addAttribute("film", filmService.getById(filmId));
         model.addAttribute("initialMessages", chatService.getLast20ByFilmId(filmId));
         model.addAttribute("userAuthentication", authRepository.findByUserId(userId));
-        model.addAttribute("avatars", avatarService.getByUserId(userId));
+        model.addAttribute("avatars", avatarService.getByUserIdAndFilmId(userId, filmId));
         return "films/chat";
     }
 
